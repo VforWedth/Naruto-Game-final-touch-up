@@ -4,6 +4,9 @@ import main.Game;
 
 public class constants {
 	
+	public static final float GRAVITY = 0.04f * Game.SCALE;
+	public static final int ANI_SPEED = 25;
+	
 	public static class EnemyConstants {
 		public static final int CRABBY = 0;
 		
@@ -39,6 +42,24 @@ public class constants {
 				}
 			}
 			return 0;
+		}
+		
+		public static int GetMaxHealth(int enemyType) {
+			switch(enemyType) {
+			case CRABBY:
+				return 10;
+			default:
+					return 1;
+			}
+		}
+		
+		public static int GetEnemyDamage(int enemyType) {
+			switch(enemyType) {
+			case CRABBY:
+				return 15;
+			default:
+					return 0;
+			}
 		}
 	}
 	
@@ -98,10 +119,9 @@ public class constants {
 		public static final int IDLE = 0;
 		public static final int RUNNING = 1;
 		public static final int JUMP = 4;
-		public static final int FALLING = 7;
-		//public static final int GROUND = 4;
-		public static final int HIT = 2;
-		public static final int ATTACK_1 = 3;
+		public static final int DEAD = 7;
+		public static final int HIT = 3;
+		public static final int ATTACK_1 = 2;
 		public static final int ATTACK_JUMP_1 = 5;
 		public static final int ATTACK_JUMP_2 = 6;
 
@@ -112,16 +132,14 @@ public class constants {
 			case IDLE:
 				return 5;
 			case HIT:
-				return 4;
+				return 5;
 			case JUMP:
 				return 4;
 			case ATTACK_1:
+				return 4;
 			case ATTACK_JUMP_1:
 			case ATTACK_JUMP_2:
-				return 3;
-//			case GROUND:
-	//			return 2;
-			case FALLING:
+				return 3;	
 			default:
 				return 1;
 			}

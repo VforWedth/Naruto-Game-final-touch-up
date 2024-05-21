@@ -28,10 +28,12 @@ public class UrmButton extends PauseButton {
 	}
 
 	public void update() {
+		index = 0;
 			if(mouseOver)
 				index = 1;
 			if(mousePressed)
 				index = 2;
+			
 	}
 	
 	public void draw(Graphics g) {
