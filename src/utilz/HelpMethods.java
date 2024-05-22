@@ -42,14 +42,14 @@ public class HelpMethods {
 		return false;
 	}
 	
-	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
+	public static float GetEntityXPosNextToWall(Rectangle2D.Float playerbox, float xSpeed) {
 		
-		int currentTile = (int) hitbox.x / Game.TILES_SIZE;
+		int currentTile = (int) playerbox.x / Game.TILES_SIZE;
 //		System.out.println(currentTile); //for debugging
 		if(xSpeed > 0) {
 			//Right
 			int tileXPos = currentTile * Game.TILES_SIZE; 
-			int xOffset = (int) (Game.TILES_SIZE - hitbox.width); 
+			int xOffset = (int) (Game.TILES_SIZE - playerbox.width); 
 			return tileXPos + xOffset - 1; 
 		}else {
 			//Left
@@ -57,14 +57,14 @@ public class HelpMethods {
 		}
 	}
 	
-	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
+	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float playerbox, float airSpeed) {
 		
-		int currentTile = (int) (hitbox.y / Game.TILES_SIZE);
-//		System.out.println(currentTile); // 7
+		int currentTile = (int) (playerbox.y / Game.TILES_SIZE);
+		//System.out.println(currentTile); // 7
 		if(airSpeed > 0) {
 			//falling -> touching floor
 			int tileYPos = currentTile * Game.TILES_SIZE; // 7 * 64 = 448
-			int yOffset = (int) ( Game.TILES_SIZE - hitbox.height); //130 - 64 = 66
+			int yOffset = (int) ( Game.TILES_SIZE - playerbox.height); //130 - 64 = 66
 			return tileYPos + yOffset - 1;//448 + 66 - 1 = 513
 			}else {
 			//jumping 

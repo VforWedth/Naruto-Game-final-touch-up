@@ -58,15 +58,21 @@ public class Player extends Entity {
 		this.currentHealth = maxHealth;
 		this.walkSpeed = Game.SCALE * 1.0f;
 		loadAnimations();
-		initHitBoxes( 30 , 22);
+		initPlayerBoxes(30 , 22);
 		initAttackBox();
 	}
 	
 	public void setSpawn(Point spawn) {
 		this.x = spawn.x;
 		this.y = spawn.y;
-		hitbox.x = x;
-		hitbox.y = y;
+		topHitBox.x = x;
+		playerbox.x = x;
+		bottomHitbox.x = x;
+		topHitBox.y = y;
+		playerbox.y = y;
+		bottomHitbox.y= y;
+	
+		
 	}
 	
 	private void initAttackBox() {
@@ -133,11 +139,11 @@ public class Player extends Entity {
 
 	private void updateAttackBox() {
 		if(right) {
-			attackBox.x = hitbox.x + hitbox.width ;
+			attackBox.x = playerbox.x + playerbox.width ;
 		}else if(left) {
-			attackBox.x = hitbox.x - hitbox.width ;
+			attackBox.x = playerbox.x - playerbox.width ;
 		}
-		attackBox.y = hitbox.y ;
+		attackBox.y = playerbox.y ;
 		
 	}
 
@@ -147,9 +153,9 @@ public class Player extends Entity {
 	}
 
 	public void render(Graphics g, int lvlOffset) {
-		g.drawImage(animations[state][aniIndex], (int)(hitbox.x  - xDrawOffset) - lvlOffset + flipX, (int)(hitbox.y - yDrawOffset) , width * flipW, height , null);
-		//drawHitBoxes(g, lvlOffset);
-		//drawAttackBox(g, lvlOffset);
+		g.drawImage(animations[state][aniIndex], (int)(playerbox.x  - xDrawOffset) - lvlOffset + flipX, (int)(playerbox.y - yDrawOffset) , width * flipW, height , null);
+		drawHitBoxes(g, lvlOffset);
+		drawAttackBox(g, lvlOffset);
 		drawUI(g);
 	}
 
@@ -182,14 +188,16 @@ public class Player extends Entity {
 		else
 			state = IDLE;
 
-		if (attacking) {
-			state = HIT;
-			if(startAni != HIT) {
-				aniIndex = 1;
-				aniTick = 0;
-				return;
-			}
-		}
+		if(attacking)
+			state = ATTACK_1;
+//		if (attacking) {
+//			state = HIT;
+//			if(startAni != HIT) {
+//				aniIndex = 1;
+//				aniTick = 0;
+//				return;
+//			}
+//		}
 		if(jump)
 			state = JUMP;
 
@@ -229,18 +237,18 @@ public class Player extends Entity {
 			flipW = 1;
 		}
 		if (!inAir)
-			if (!IsEntityOnFloor(hitbox, lvlData))
+			if (!IsEntityOnFloor(playerbox, lvlData))
 				inAir = true;
 
 		if (inAir) {
-			if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData) && CanMoveHere(bottomHitbox.x, bottomHitbox.y + airSpeed, bottomHitbox.width, bottomHitbox.height, lvlData)) {
-				hitbox.y += airSpeed;
+			if (CanMoveHere(playerbox.x, playerbox.y + airSpeed, playerbox.width, playerbox.height, lvlData) && CanMoveHere(bottomHitbox.x, bottomHitbox.y + airSpeed, bottomHitbox.width, bottomHitbox.height, lvlData)) {
+				playerbox.y += airSpeed;
 				topHitBox.y += airSpeed;
 				bottomHitbox.y += airSpeed;
 				airSpeed += GRAVITY;
 				updateXPos(xSpeed);
 			} else {
-				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+				playerbox.y = GetEntityYPosUnderRoofOrAboveFloor(playerbox, airSpeed);
 				if (airSpeed > 0)
 					resetInAir();
 				else
@@ -251,8 +259,8 @@ public class Player extends Entity {
 		} else
 			updateXPos(xSpeed);
 		
-		hitbox.x = bottomHitbox.x;
-        hitbox.y = bottomHitbox.y + bottomHitbox.height;
+		playerbox.x = bottomHitbox.x;
+		playerbox.y = bottomHitbox.y + bottomHitbox.height;
         bottomHitbox.x = topHitBox.x;
         bottomHitbox.y = topHitBox.y + topHitBox.height;
 		moving = true;
@@ -274,14 +282,14 @@ public class Player extends Entity {
 	}
 
 	private void updateXPos(float xSpeed) {
-		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && CanMoveHere(topHitBox.x + xSpeed, topHitBox.y, topHitBox.width, topHitBox.height, lvlData) && CanMoveHere(bottomHitbox.x + xSpeed, bottomHitbox.y, bottomHitbox.width, bottomHitbox.height, lvlData)) {
-			hitbox.x += xSpeed;
+		if (CanMoveHere(playerbox.x + xSpeed, playerbox.y, playerbox.width, playerbox.height, lvlData) && CanMoveHere(topHitBox.x + xSpeed, topHitBox.y, topHitBox.width, topHitBox.height, lvlData) && CanMoveHere(bottomHitbox.x + xSpeed, bottomHitbox.y, bottomHitbox.width, bottomHitbox.height, lvlData)) {
+			playerbox.x += xSpeed;
 			topHitBox.x += xSpeed;
 			bottomHitbox.x += xSpeed;
 			moving = true;
 		}else {
 			topHitBox.x = GetEntityXPosNextToWall(topHitBox, xSpeed);
-			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
+			playerbox.x = GetEntityXPosNextToWall(playerbox, xSpeed);
 			bottomHitbox.x = GetEntityXPosNextToWall(bottomHitbox, xSpeed);
 		}
 		
@@ -353,12 +361,14 @@ public class Player extends Entity {
 		state = IDLE;
 		currentHealth = maxHealth;
 		 
-		hitbox.x = x;
-		hitbox.y = y;
+		playerbox.x = x;
+		playerbox.y = y;
 		bottomHitbox.x = x;
 		topHitBox.x = x;
+		bottomHitbox.y= y;
+		topHitBox.y = y;
 		
-		if (!IsEntityOnFloor(hitbox, lvlData))
+		if (!IsEntityOnFloor(playerbox, lvlData))
 			inAir = true;
 	}
 

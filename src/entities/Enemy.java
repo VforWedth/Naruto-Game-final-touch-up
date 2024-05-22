@@ -64,17 +64,17 @@ public abstract class Enemy extends Entity {
 	}
 	
 	protected void turnTowardsPlayer(Player player) {
-		if(player.hitbox.x > hitbox.x)
+		if(player.playerbox.x > hitbox.x)
 			walkDir = RIGHT;
 			else
 				walkDir = LEFT;
 	}
 	
 	protected boolean canSeePlayer(int[][] lvlData, Player player) {
-		int PlayerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
+		int PlayerTileY = (int) (player.getPlayerBox().y / Game.TILES_SIZE);
 		if(PlayerTileY == tileY) {
 			if(isPlayerInRange(player)) {
-				if(IsSightClear(lvlData, hitbox, player.hitbox, tileY)) {
+				if(IsSightClear(lvlData, hitbox, player.playerbox, tileY)) {
 					return true;
 				}
 			}
@@ -83,12 +83,12 @@ public abstract class Enemy extends Entity {
 	}
 	
 	protected boolean isPlayerInRange(Player player) {
-		int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
+		int absValue = (int) Math.abs(player.playerbox.x - hitbox.x);
 		return absValue <= attackDistance * 5;
 	}
 	
 	protected boolean isPlayerCloseForAttack(Player player) {
-		int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
+		int absValue = (int) Math.abs(player.playerbox.x - hitbox.x);
 		return absValue <= attackDistance;
 	}
 
@@ -107,7 +107,7 @@ public abstract class Enemy extends Entity {
 	}
 	
 	protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player) {
-		if(attackBox.intersects(player.hitbox))
+		if(attackBox.intersects(player.playerbox))
 			player.changeHealth(-GetEnemyDamage(enemyType));
 		attackChecked = true;
 	}
@@ -138,6 +138,7 @@ public abstract class Enemy extends Entity {
 	}
 	
 	public void resetEnemy() {
+		
 		hitbox.x = x;
 		hitbox.y = y;
 		firstUpdate = true;

@@ -10,7 +10,7 @@ public abstract class Entity {
 
 	protected float x, y;
 	protected int width, height;
-	protected Rectangle2D.Float hitbox, topHitBox, bottomHitbox;
+	protected Rectangle2D.Float hitbox,playerbox,topHitBox, bottomHitbox;
 	protected int aniTick, aniIndex;
 	protected int state;
 	protected float airSpeed;
@@ -39,7 +39,7 @@ public abstract class Entity {
         
         // actual working hitbox for jumping
         g.setColor(java.awt.Color.pink);
-        g.drawRect((int) hitbox.x - lvlOffset,(int) hitbox.y,(int) hitbox.width,(int) hitbox.height);
+        g.drawRect((int) playerbox.x - lvlOffset,(int) playerbox.y,(int) playerbox.width,(int) playerbox.height);
 
         
     }
@@ -50,11 +50,20 @@ public abstract class Entity {
 		
 	}
 
-    protected void initHitBoxes(float width, float height) {
+    protected void initPlayerBoxes(float width, float height) {
         topHitBox = new Rectangle2D.Float(x,  y + height*2 , (int)(width * Game.SCALE), (int)(height * Game.SCALE));
         bottomHitbox = new Rectangle2D.Float(x, y + height*2 , (int)(width * Game.SCALE), (int)(height * Game.SCALE));
-        hitbox = new Rectangle2D.Float(x, y, (int)(width * Game.SCALE), (int)(height * Game.SCALE));
+        playerbox = new Rectangle2D.Float(x, y, (int)(width * Game.SCALE), (int)(height * Game.SCALE));
     }
+    
+    protected void drawHitbox(Graphics g, int xLvlOffset) {
+		g.setColor(Color.PINK);
+		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+	}
+    
+    protected void initHitbox(int width, int height) {
+		hitbox = new Rectangle2D.Float(x, y, (int) (width * Game.SCALE), (int) (height * Game.SCALE));
+	}
     
     public int getState() {
     	return state;
@@ -63,9 +72,12 @@ public abstract class Entity {
     public int getAniIndex() {
     	return aniIndex;
     }
-    
-    public Rectangle2D.Float getHitbox(){
+    public Rectangle2D.Float getHitBox(){
     	return hitbox;
+    }
+    
+    public Rectangle2D.Float getPlayerBox(){
+    	return playerbox;
     }
 
     public Rectangle2D.Float getTopHitBox() {

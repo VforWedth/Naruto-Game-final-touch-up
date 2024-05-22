@@ -4,6 +4,6 @@
 /**
  * 
  */
-module GameTest {
+module Tuto {
 	requires java.desktop;
 }
