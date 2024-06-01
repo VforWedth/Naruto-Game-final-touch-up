@@ -10,9 +10,10 @@ import javax.imageio.ImageIO;
 import entities.Player;
 
 public class LoadSave {
-
+	
 	public static final String PLAYER_ATLAS = Player.ChooseCharacter();
-	public static final String LEVEL_ATLAS = "NewTiles.png";
+	public static final String LEVEL_ATLAS = "os1.png";
+	public static final String ICON = "logo.png";
 //	public static final String LEVEL_ONE_DATA = "level_one_data_2.png";
 	public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU_BACKGROUND = "menu_background.png";
@@ -21,20 +22,35 @@ public class LoadSave {
 	public static final String URM_BUTTONS = "urm_buttons.png";	
 	public static final String VOLUME_BUTTONS = "volume_buttons.png";	
 	public static final String MENU_BACKGROUND_IMAGE = "background_menu.png";
-	public static final String PLAYING_BACKGROUND_IMAGE = "bg.jpg";
+	public static final String PLAYING_BACKGROUND_IMAGE = "bg.png";
 	public static final String KONOHA_HOUSES = "konohaBg.png";
-	public static final String SMALL_CLOUDS = "small_clouds.png";
+	public static final String SMALL_CLOUDS = "cloud2.png";
 	public static final String BIG_CLOUDS = "big_clouds.png";
 	public static final String CRABBY_SPRITE = "crabby_sprite.png";
 	public static final String STATUS_BAR = "health_power_bar.png";
 	public static final String COMPLETED_IMG = "completed_sprite.png";
 	public static final String DEATH_SCREEN = "death_screen.png";
 	public static final String OPTIONS_MENU = "options_background.png";
+	public static final String POTION = "potions_sprites.png";
+	public static final String CONTAINER = "objects_sprites.png";
+	public static final String GAME_COMPLETED = "game_completed.png";
+	public static final String CREDITS = "credits_list.png";
+	public static final String TRAP_ATLAS = "trap_atlas.png";
+	public static final String CANNON_ATLAS = "cannon_atlas.png";
+	public static final String CANNON_BALL = "ball.png";
+	public static final String GRASS_ATLAS = "grass_atlas.png";
+	
+	//moreenemies
+	public static final String PINKSTAR_ATLAS = "pinkstar_atlas.png";
+	public static final String QUESTION_ATLAS = "question_atlas.png";
+	public static final String EXCLAMATION_ATLAS = "exclamation_atlas.png";
+	public static final String SHARK_ATLAS = "shark_atlas.png";
+	
 	
 	//for water
 	public static final String WATER_TOP = "water_atlas_animation.png";
 	public static final String WATER_BOTTOM = "water.png";
-
+	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
 		InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
@@ -83,5 +99,6 @@ public class LoadSave {
 		
 		return imgs;
 	}
+	
 	
 }

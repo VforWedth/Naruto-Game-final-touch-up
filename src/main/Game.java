@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 
 import audio.AudioPlayer;
+import gamestates.Credits;
 import gamestates.GameOptions;
 import gamestates.Gamestate;
 import gamestates.Menu;
@@ -11,7 +12,6 @@ import ui.AudioOptions;
 
 public class Game implements Runnable {
 
-	private GameWindow gameWindow;
 	private GamePanel gamePanel;
 	private Thread gameThread;
 	private final int FPS_SET = 120;
@@ -19,9 +19,11 @@ public class Game implements Runnable {
 	
 	private Playing playing;
 	private Menu menu;
+	private Credits credits;
 	private AudioOptions audioOptions;
 	private GameOptions gameOptions;
 	private AudioPlayer audioPlayer;
+	
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1f;
@@ -32,10 +34,11 @@ public class Game implements Runnable {
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
 	public Game() {
+		//System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);
 		initClasses();
 
 		gamePanel = new GamePanel(this);
-		gameWindow = new GameWindow(gamePanel);
+		new GameWindow(gamePanel);
 		gamePanel.setFocusable(true);
 		gamePanel.requestFocus();
 		gamePanel.requestFocusInWindow();
@@ -47,6 +50,7 @@ public class Game implements Runnable {
 		audioPlayer = new AudioPlayer();
 		menu = new Menu(this);
 		playing = new Playing(this);
+		credits = new Credits(this);
 		gameOptions = new GameOptions(this);
 	}
 
@@ -57,40 +61,57 @@ public class Game implements Runnable {
 
 	public void update() {
 		
-		switch(Gamestate.state) {
-		case MENU:
-			menu.update();
-			break;
-		case PLAYING:
-			playing.update();
-			break;
-		case OPTIONS:
-			gameOptions.update();
-			break;
-		case QUIT:
-			System.exit(0);
-			break;
-		default:
-			System.exit(0);
-			break;
-		
+//		switch(Gamestate.state) {		OLD ONE
+//		case MENU:
+//			menu.update();
+//			break;
+//		case PLAYING:
+//			playing.update();
+//			break;
+//		case OPTIONS:
+//			gameOptions.update();
+//			break;
+//		case QUIT:
+//			System.exit(0);
+//			break;
+//		default:
+//			System.exit(0);
+//			break;
+//		
+//		}
+		switch (Gamestate.state) {
+		case MENU -> menu.update();
+		case PLAYING -> playing.update();
+		case OPTIONS -> gameOptions.update();
+		case CREDITS -> credits.update();
+		case QUIT -> System.exit(0);
 		}
 	}
 
+//	public void render(Graphics g) {		OLD ONE
+//		switch(Gamestate.state) {
+//		case MENU:
+//			menu.draw(g);
+//			break;
+//		case PLAYING:
+//			playing.draw(g);
+//			break;
+//		case OPTIONS:
+//			gameOptions.draw(g);
+//			break;
+//		default:
+//			break;
+//		
+//		}
+//	}
+	
+	@SuppressWarnings("incomplete-switch")
 	public void render(Graphics g) {
-		switch(Gamestate.state) {
-		case MENU:
-			menu.draw(g);
-			break;
-		case PLAYING:
-			playing.draw(g);
-			break;
-		case OPTIONS:
-			gameOptions.draw(g);
-			break;
-		default:
-			break;
-		
+		switch (Gamestate.state) {
+		case MENU -> menu.draw(g);
+		case PLAYING -> playing.draw(g);
+		case OPTIONS -> gameOptions.draw(g);
+		case CREDITS -> credits.draw(g);
 		}
 	}
 
@@ -151,6 +172,10 @@ public class Game implements Runnable {
 	
 	public Playing getPlaying() {
 		return playing;
+	}
+	
+	public Credits getCredits() {
+		return credits;
 	}
 	
 	public GameOptions getGameOptions() {

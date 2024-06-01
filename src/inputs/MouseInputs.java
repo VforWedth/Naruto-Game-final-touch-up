@@ -87,6 +87,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		switch (Gamestate.state) {
 		case MENU:
 			gamePanel.getGame().getMenu().mouseReleased(e);
+			
 			break;
 		case PLAYING:
 			gamePanel.getGame().getPlaying().mouseReleased(e);

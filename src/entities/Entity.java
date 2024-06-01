@@ -1,5 +1,8 @@
 package entities;
 
+import static utilz.HelpMethods.CanMoveHere;
+import static utilz.constants.Directions.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
@@ -19,6 +22,11 @@ public abstract class Entity {
 	protected int currentHealth;
 	protected Rectangle2D.Float attackBox;
 	protected float walkSpeed = 1.0f * Game.SCALE;
+	
+	protected int pushBackDir;
+	protected float pushDrawOffset;
+	protected int pushBackOffsetDir = UP;
+
 
 	public Entity(float x, float y, int width, int height) {
 		this.x = x;
@@ -27,7 +35,46 @@ public abstract class Entity {
 		this.height = height;
 
 	}
+	
+	protected void updatePushBackDrawOffset() {
+		float speed = 0.95f;
+		float limit = -30f;
 
+		if (pushBackOffsetDir == UP) {
+			pushDrawOffset -= speed;
+			if (pushDrawOffset <= limit)
+				pushBackOffsetDir = DOWN;
+		} else {
+			pushDrawOffset += speed;
+			if (pushDrawOffset >= 0)
+				pushDrawOffset = 0;
+		}
+	}
+	
+	protected void pushBack(int pushBackDir, int[][] lvlData, float speedMulti) {
+		float xSpeed = 0;
+		if (pushBackDir == LEFT)
+			xSpeed = -walkSpeed;
+		else
+			xSpeed = walkSpeed;
+
+		if (CanMoveHere(hitbox.x + xSpeed * speedMulti, hitbox.y, hitbox.width, hitbox.height, lvlData))
+			hitbox.x += xSpeed * speedMulti;
+	}
+	
+//	protected void pushPlayerBack(int pushBackDir, int[][] lvlData, float speedMulti) {
+//		float xSpeed = 0;
+//		if (pushBackDir == LEFT)
+//			xSpeed = -walkSpeed;
+//		else
+//			xSpeed = walkSpeed;
+//
+//		if (CanMoveHere(playerbox.x + xSpeed * speedMulti, playerbox.y, playerbox.width, playerbox.height, lvlData) && CanMoveHere(topHitBox.x + xSpeed * speedMulti, topHitBox.y, topHitBox.width, topHitBox.height, lvlData) && CanMoveHere(bottomHitbox.x + xSpeed * speedMulti, bottomHitbox.y, bottomHitbox.width, bottomHitbox.height, lvlData))
+//			playerbox.x += xSpeed * speedMulti;
+//			topHitBox.x += xSpeed * speedMulti;
+//			bottomHitbox.x += xSpeed * speedMulti;
+//	}
+	
 	protected void drawHitBoxes(Graphics g, int lvlOffset) {
         // Top hitbox debugging
         g.setColor(java.awt.Color.RED);
@@ -72,6 +119,14 @@ public abstract class Entity {
     public int getAniIndex() {
     	return aniIndex;
     }
+    
+    protected void newState(int state) {
+    	this.state = state;
+    	aniTick = 0;
+    	aniIndex = 0;
+    	
+    }
+    
     public Rectangle2D.Float getHitBox(){
     	return hitbox;
     }
