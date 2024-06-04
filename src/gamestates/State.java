@@ -25,12 +25,11 @@ public class State {
 		return game;
 	}
 	
+	@SuppressWarnings("incomplete-switch")
 	public void setGameState(Gamestate state) {
 		switch(state) {
 		case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU);
-		case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-		default -> throw new IllegalArgumentException("Unexpected value: " + state);
-			
+		case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());	
 		}
 		Gamestate.state = state;
 	}

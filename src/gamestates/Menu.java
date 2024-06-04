@@ -12,7 +12,7 @@ import utilz.LoadSave;
 
 public class Menu extends State implements Statemethods {
 	
-	private MenuButton[] button = new MenuButton[3];
+	private MenuButton[] button = new MenuButton[4];
 	private BufferedImage backgroundImg, backgroundTheme;
 	private int menuX , menuY, menuWidth, menuHeight;
 	
@@ -29,14 +29,14 @@ public class Menu extends State implements Statemethods {
 		menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE);
 		menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE);
 		menuX = Game.GAME_WIDTH/2 - menuWidth / 2;
-		menuY = (int) ( 45 * Game.SCALE);
+		menuY = (int) ( 25 * Game.SCALE);
 	}
 
 	private void loadButtons() {
-		button[0] = new MenuButton(Game.GAME_WIDTH/2, (int) (150 * Game.SCALE) , 0, Gamestate.PLAYING );
-		button[1] = new MenuButton(Game.GAME_WIDTH/2, (int) (220 * Game.SCALE) , 1, Gamestate.OPTIONS );
-		button[2] = new MenuButton(Game.GAME_WIDTH/2, (int) (290 * Game.SCALE) , 2, Gamestate.QUIT );
-		
+		button[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (130 * Game.SCALE), 0, Gamestate.PLAYING);
+		button[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (200 * Game.SCALE), 1, Gamestate.OPTIONS);
+		button[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (270 * Game.SCALE), 3, Gamestate.CREDITS);
+		button[3] = new MenuButton(Game.GAME_WIDTH / 2, (int) (340 * Game.SCALE), 2, Gamestate.QUIT);
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class Menu extends State implements Statemethods {
 	@Override
 	public void draw(Graphics g) {
 		
-//		g.setColor(new Color(0, 0, 0, 150));
-//		g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+		g.setColor(new Color(0, 0, 0, 150));
+		g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 		g.drawImage(backgroundTheme, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT,null);	
 		g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight, null);
 		for(MenuButton mb : button) {
@@ -71,7 +71,6 @@ public class Menu extends State implements Statemethods {
 		for(MenuButton mb : button) {
 			if(isIn(e, mb)) {
 				mb.setMousePressed(true);
-				break;
 			}
 		}
 		

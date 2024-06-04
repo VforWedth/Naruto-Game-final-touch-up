@@ -44,15 +44,11 @@ public class MenuButton {
 	}
 	
 	public void update() {
-		
 		index = 0;
-		if(mouseOver) {
+		if(mouseOver) 
 			index = 1;
-		}
-		if(mousePressed) {
+		if(mousePressed) 
 			index = 2;
-		}
-		
 	}
 
 	public boolean isMouseOver() {
